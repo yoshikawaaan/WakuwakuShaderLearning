@@ -65,21 +65,15 @@
 			float orbit(float2 st, float speed, float size)
 			{
 				//speed=50 size=0.25
-				float x = sin(_Time * speed)*size;
-				float y = cos(_Time * speed)*size;
+				float x = cos(_Time * speed)*size;
+				float y = sin(_Time * speed)*size;
 
 				return circle(st, x + 0.5, y + 0.5)*(1 - ring(st, size, 0.02));
 			}
 
-			
-
-			#define PI 3.14150265359
-
-
 			fixed4 frag(v2f i) : SV_Target
 			{
-				float x = 0;
-				float y = 1;
+
 				return orbit(i.uv,50,0.4);
 			}
 			ENDCG
