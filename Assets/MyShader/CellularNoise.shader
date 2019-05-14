@@ -1,12 +1,12 @@
-﻿Shader "Monica/TestFrag"
+﻿Shader "Monica/CellularNoise"
 {
 	Properties
 	{
-		_MainTex("Texture", 2D) = "white" {}
+		_MainTex ("Texture", 2D) = "white" {}
 	}
-		SubShader
+	SubShader
 	{
-		Tags { "RenderType" = "Opaque" }
+		Tags { "RenderType"="Opaque" }
 		LOD 100
 
 		Pass
@@ -16,7 +16,7 @@
 			#pragma fragment frag
 			// make fog work
 			#pragma multi_compile_fog
-
+			
 			#include "UnityCG.cginc"
 
 			struct appdata
@@ -34,8 +34,8 @@
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
-
-			v2f vert(appdata v)
+			
+			v2f vert (appdata v)
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
@@ -51,7 +51,7 @@
 				return -1.0 + 2.0 * frac(sin(st) * 43758.5453123);
 			}
 
-			float cellularnoise(float2 st,float n) {
+			float cellularnoise(float2 st, float n) {
 				st *= n;
 
 				float2 ist = floor(st);
@@ -77,10 +77,9 @@
 			fixed4 frag(v2f i) : SV_Target
 			{
 
-				return cellularnoise(i.uv, 4)*0.8*float4(2.05, 1.70, -2, 1)+float4(0.1,0.1,1.5,1);
+				return cellularnoise(i.uv, 4)*0.8*float4(2.05, 1.70, -2, 1) + float4(0.1,0.1,1.5,1);
 			}
 			ENDCG
-			
 		}
 	}
 }
