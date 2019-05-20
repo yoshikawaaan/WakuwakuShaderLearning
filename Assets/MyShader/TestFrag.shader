@@ -44,40 +44,9 @@
 				return o;
 			}
 
-			float2 random2(float2 st)
-			{
-				st = float2(dot(st, float2(127.1, 311.7)),
-					dot(st, float2(269.5, 183.3)));
-				return -1.0 + 2.0 * frac(sin(st) * 43758.5453123);
-			}
-
-			float cellularnoise(float2 st,float n) {
-				st *= n;
-
-				float2 ist = floor(st);
-				float2 fst = frac(st);
-
-				float distance = 5;
-
-				for (int y = -1; y <= 1; y++)
-					for (int x = -1; x <= 1; x++)
-					{
-						float2 neighbor = float2(x, y);
-						float2 p = 0.5 + 0.5 * sin(_Time.y + 6.2831 * random2(ist + neighbor));
-
-						float2 diff = neighbor + p - fst;
-						distance = min(distance, length(diff));
-					}
-
-				float color = distance * 0.5;
-
-				return color;
-			}
-
 			fixed4 frag(v2f i) : SV_Target
 			{
-
-				return cellularnoise(i.uv, 4)*0.8*float4(2.05, 1.70, -2, 1)+float4(0.1,0.1,1.5,1);
+				return 1;
 			}
 			ENDCG
 			
