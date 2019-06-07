@@ -43,22 +43,36 @@
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
+
+			#define PI 3.14159265359
 			float disc(float2 st) {
 				float d = distance(st, float2(0.5, 0.5));
 				float s = step(0.5, d);
 				return s;
 			}
 
+			float fan_shape(float2 st, float angle) {
+				float dx = 0.5 - st.x;
+				float dy = 0.5 - st.y;
+
+				float rad = atan2(dx, dy);
+				rad = rad * 180 / PI + 180;
+
+				float n1 = floor((_Time * 1000 + angle) / (360));
+				float n2 = floor((_Time * 1000) / (360));
+				float offset1 = _Time * 1000 - 360 * n1;
+				float offset2 = _Time * 1000 - 360 * n2;
+				float s1 = step(rad, angle + offset1);
+				float s2 = step(offset2, rad);
+
+				return (s1*s2)*step(offset2, 360 - angle) +
+					(s1 + s2)*(1 - step(offset2, 360 - angle))
+					- disc(st);
+			}
+
 			fixed4 frag(v2f i) : SV_Target
 			{
-				float dx = 0.5 - i.uv.x;
-				float dy = 0.5 - i.uv.y;
-
-				float rad = atan2(dx,dy);
-
-				float s = step(2,rad);
-
-				return s - disc(i.uv);
+				return fan_shape(i.uv, 60);
 			}
             ENDCG
         }

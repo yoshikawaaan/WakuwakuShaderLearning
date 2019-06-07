@@ -55,14 +55,14 @@
 				float dy = 0.5 - st.y;
 
 				float rad = atan2(dx, dy);
-				rad = rad * 180 / PI;
+				rad = rad * 180 / PI+180;
 
 				float n1 = floor((_Time * 1000 + angle) / (360));
 				float n2 = floor((_Time * 1000) / (360));
 				float offset1 = _Time * 1000 - 360 * n1;
 				float offset2 = _Time * 1000 - 360 * n2;
-				float s1 = step(rad, -180 + angle + offset1);
-				float s2 = step(-180 + offset2, rad);
+				float s1 = step(rad, angle + offset1);
+				float s2 = step(offset2, rad);
 				
 				return (s1*s2)*step(offset2, 360 - angle)+
 					(s1 + s2)*(1-step(offset2, 360 - angle))
@@ -78,14 +78,13 @@
 
 				float d = distance(rad-180, 0)/360;
 
-				return d+0.08;
+				return d;
 			}
 
 			fixed4 frag(v2f i) : SV_Target
 			{
 
 				return fan_shape(i.uv,60)*sonar(i.uv);
-				//return sonar(i.uv);
 			}
 			ENDCG
 		}
