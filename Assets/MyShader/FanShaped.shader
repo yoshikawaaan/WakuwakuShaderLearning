@@ -1,4 +1,4 @@
-﻿Shader "Unlit/FanShape"
+﻿Shader "Monica/FanShape"
 {
     Properties
     {
